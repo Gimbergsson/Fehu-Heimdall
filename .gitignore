@@ -1,0 +1,39 @@
+*.iml
+.gradle
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+
+#built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+.class
+
+# generated files
+bin/
+gen/
+
+# Local configuration file (sdk path, etc)
+local.properties
+keystore.properties
+
+# Windows thumbnail db
+Thumbs.db
+
+.DS_Store
+.classpath
+.project
+*.iml
+.idea
+.gradle
+build/
+app/release/
+app/production/
+app/staging/
+app/output.json
+
