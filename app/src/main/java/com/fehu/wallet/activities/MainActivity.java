@@ -1,14 +1,6 @@
 package com.fehu.wallet.activities;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -19,7 +11,17 @@ import com.fehu.wallet.fragments.CheckoutFragment;
 import com.fehu.wallet.fragments.HomeFragment;
 import com.fehu.wallet.fragments.MainFragment;
 import com.fehu.wallet.fragments.ScannerFragment;
+import com.fehu.wallet.network.ApiManager;
+import com.fehu.wallet.network.repositories.BlockchainCurrencyPriceRepo;
+import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -33,6 +35,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @BindView(R.id.nav_view)
     NavigationView navigationView;
+
+    private ApiManager apiManager;
+    private BlockchainCurrencyPriceRepo blockchainCurrencyPriceRepo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +54,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_camera);
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
+
+        apiManager = ApiManager.getInstance();
+        blockchainCurrencyPriceRepo = apiManager.getBlockchainCurrencyPricesRepo(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (blockchainCurrencyPriceRepo != null) {
+            blockchainCurrencyPriceRepo.truncateDb();
+        }
     }
 
     @Override
@@ -86,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
 
         switch (item.getItemId()) {
             case R.id.nav_camera:
