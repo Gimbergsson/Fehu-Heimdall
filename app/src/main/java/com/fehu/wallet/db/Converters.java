@@ -1,4 +1,4 @@
-package com.fehu.wallet.network.api;
+package com.fehu.wallet.db;
 
 import com.fehu.wallet.network.models.FiatCurrency;
 import com.google.gson.Gson;

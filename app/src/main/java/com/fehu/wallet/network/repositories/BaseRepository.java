@@ -1,25 +1,30 @@
 package com.fehu.wallet.network.repositories;
 
-import com.fehu.wallet.da.BlockchainDao;
+import com.fehu.wallet.db.da.ExchangePricesDao;
+import com.fehu.wallet.db.da.FehuDao;
 
 /**
  * Created by Dennis Gimbergsson on 2018-09-23.
  */
 public abstract class BaseRepository {
 
-    BlockchainDao blockchainDao = null;
+    FehuDao fehuDao = null;
+    ExchangePricesDao exchangePricesDao = null;
 
     public void truncateDb() {
         /*new Thread(() -> {
-            if (blockchainDao != null) blockchainDao.truncate();
+            if (fehuDao != null) fehuDao.truncate();
         }).start();*/
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (blockchainDao != null) {
-                    blockchainDao.truncate();
+                if (fehuDao != null) {
+                    fehuDao.truncate();
                 }
+                /*if (exchangePricesDao != null) {
+                    exchangePricesDao.truncate();
+                }*/
             }
         }).start();
     }

@@ -1,7 +1,6 @@
 package com.fehu.wallet.fragments;
 
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,25 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fehu.wallet.R;
-import com.fehu.wallet.network.ApiManager;
+import com.fehu.wallet.network.api.ApiManager;
 import com.fehu.wallet.network.models.BlockchainCurrencyPrices;
-import com.fehu.wallet.network.repositories.BlockchainCurrencyPriceRepo;
+import com.fehu.wallet.network.repositories.BitstampCurrencyPriceRepo;
 import com.fehu.wallet.viewmodels.BlockchainCurrencyViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by Dennis Gimbergsson on 2018-09-15.
@@ -77,16 +72,18 @@ public class MainFragment extends Fragment implements BottomNavigationView.OnNav
             @Override
             public void onClick(View view) {
 
-                final ProgressDialog dialogBuilder = new ProgressDialog(getActivity());
+               /* final ProgressDialog dialogBuilder = new ProgressDialog(getActivity());
                 dialogBuilder.setTitle("Loading");
                 dialogBuilder.setIndeterminate(true);
-                dialogBuilder.show();
+                dialogBuilder.show();*/
 
-                BlockchainCurrencyPriceRepo currencyPriceRepo = apiManager.getBlockchainCurrencyPricesRepo(getActivity());
+                /*BlockchainCurrencyPriceRepo currencyPriceRepo = apiManager.getBlockchainCurrencyPricesRepo(getActivity());*/
+
                 /*if (currencyPriceRepo.loadCurrencyPrices().getValue() != null) {
                     String price = currencyPriceRepo.loadCurrencyPrices().getValue().getUsd().getFifteenMinutes();
                 }*/
-                currencyPriceRepo.loadCurrencyPrices(new Callback<BlockchainCurrencyPrices>() {
+
+                /*currencyPriceRepo.loadCurrencyPrices(new Callback<BlockchainCurrencyPrices>() {
                     @Override
                     public void onResponse(@NonNull Call<BlockchainCurrencyPrices> call, @NonNull Response<BlockchainCurrencyPrices> response) {
                         dialogBuilder.dismiss();
@@ -100,8 +97,12 @@ public class MainFragment extends Fragment implements BottomNavigationView.OnNav
                         alertDialogBuilder.setTitle(throwable.getMessage())
                                 .show();
                     }
-                });
+                });*/
+
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
+                BitstampCurrencyPriceRepo bitstampCurrencyPriceRepo = apiManager.getBitsampCurrencyPriceBtcUsd(getActivity());
+                bitstampCurrencyPriceRepo.loadCurrencyPrices();
             }
         });
 

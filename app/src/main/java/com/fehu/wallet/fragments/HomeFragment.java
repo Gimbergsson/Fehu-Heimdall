@@ -10,15 +10,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fehu.wallet.R;
-import com.fehu.wallet.network.ApiManager;
+import com.fehu.wallet.db.models.ExchangePrices;
+import com.fehu.wallet.network.api.ApiManager;
 import com.fehu.wallet.network.models.BlockchainCurrencyPrices;
-import com.fehu.wallet.network.repositories.BlockchainCurrencyPriceRepo;
+import com.fehu.wallet.network.repositories.BitstampCurrencyPriceRepo;
 import com.fehu.wallet.viewmodels.BlockchainCurrencyViewModel;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import com.fehu.wallet.viewmodels.ExchangePricesViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,6 +36,9 @@ public class HomeFragment extends Fragment {
     private Context context;
     private BlockchainCurrencyViewModel blockchainCurrencyViewModel;
     private Observer<BlockchainCurrencyPrices> blockchainCurrencyPricesListObserver;
+
+    private ExchangePricesViewModel exchangePricesViewModel;
+    private Observer<ExchangePrices> exchangePricesObserver;
     private View rootView;
 
     public HomeFragment getInstance() {
@@ -63,7 +63,25 @@ public class HomeFragment extends Fragment {
     public void onStart() {
         super.onStart();
         ApiManager apiManager = ApiManager.getInstance();
-        BlockchainCurrencyPriceRepo currencyPriceRepo = apiManager.getBlockchainCurrencyPricesRepo(getContext());
+
+        BitstampCurrencyPriceRepo bitstampCurrencyPriceRepo = apiManager.getBitsampCurrencyPriceBtcUsd(getActivity());
+
+        exchangePricesViewModel = ViewModelProviders.of(this).get(ExchangePricesViewModel.class);
+        exchangePricesViewModel.setRepository(bitstampCurrencyPriceRepo);
+        exchangePricesObserver = new Observer<ExchangePrices>() {
+            @Override
+            public void onChanged(ExchangePrices exchangePrices) {
+                for (int i = 0; 5 > i; i++) {
+                    Log.d("onChange", exchangePrices.getBtcusd());
+                }
+                Toast.makeText(getActivity(), exchangePrices.getBtcusd(), Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        exchangePricesViewModel.getExchangePricesLiveData().observe(this, exchangePricesObserver);
+
+
+       /* BlockchainCurrencyPriceRepo currencyPriceRepo = apiManager.getBlockchainCurrencyPricesRepo(getContext());
 
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         final int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -89,7 +107,7 @@ public class HomeFragment extends Fragment {
             }
         };
 
-        blockchainCurrencyViewModel.getBlockchainCurrencyPrices().observe(this, blockchainCurrencyPricesListObserver);
+        blockchainCurrencyViewModel.getBlockchainCurrencyPrices().observe(this, blockchainCurrencyPricesListObserver);*/
     }
 
     @Override

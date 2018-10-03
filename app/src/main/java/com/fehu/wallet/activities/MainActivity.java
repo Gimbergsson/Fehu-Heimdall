@@ -1,17 +1,19 @@
 package com.fehu.wallet.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.amitshekhar.DebugDB;
 import com.fehu.wallet.R;
 import com.fehu.wallet.fragments.AccountFragment;
 import com.fehu.wallet.fragments.CheckoutFragment;
 import com.fehu.wallet.fragments.HomeFragment;
 import com.fehu.wallet.fragments.MainFragment;
 import com.fehu.wallet.fragments.ScannerFragment;
-import com.fehu.wallet.network.ApiManager;
+import com.fehu.wallet.network.api.ApiManager;
 import com.fehu.wallet.network.repositories.BlockchainCurrencyPriceRepo;
 import com.google.android.material.navigation.NavigationView;
 
@@ -45,6 +47,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        for (int i = 0; 5 > i; i++) {
+            Log.d("DB Address", DebugDB.getAddressLog());
+        }
+
         setSupportActionBar(toolbar);
 
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -56,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
 
         apiManager = ApiManager.getInstance();
+
+
         blockchainCurrencyPriceRepo = apiManager.getBlockchainCurrencyPricesRepo(this);
     }
 

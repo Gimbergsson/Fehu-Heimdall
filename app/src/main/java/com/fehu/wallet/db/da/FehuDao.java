@@ -1,4 +1,4 @@
-package com.fehu.wallet.da;
+package com.fehu.wallet.db.da;
 
 import com.fehu.wallet.network.models.BlockchainCurrencyPrices;
 
@@ -8,14 +8,13 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import static androidx.room.OnConflictStrategy.ABORT;
 import static androidx.room.OnConflictStrategy.REPLACE;
 
 /**
  * Created by Dennis Gimbergsson on 2018-09-23.
  */
 @Dao
-public interface BlockchainDao {
+public interface FehuDao {
 
     @Insert(onConflict = REPLACE)
     void insertBlcokchainCurrencyPrices(BlockchainCurrencyPrices... blockchainCurrencyPrices);
@@ -35,8 +34,8 @@ public interface BlockchainDao {
     @Query("DELETE FROM BlockchainCurrencyPrices where timestamp NOT IN (SELECT timestamp from BlockchainCurrencyPrices LIMIT 1000)")
     void truncate();
 
-    /*@Query("DELETE FROM BlockchainCurrencyPrices")
-    void deleteAll();*/
+    @Query("DELETE FROM BlockchainCurrencyPrices")
+    void deleteAll();
 
     @Delete
     void delete(BlockchainCurrencyPrices blockchainCurrencyPrices);
@@ -44,9 +43,13 @@ public interface BlockchainDao {
     @Query("Delete FROM BlockchainCurrencyPrices where timestamp > (Select timestamp from BlockchainCurrencyPrices)")
     void deleteOld();
 
-    @Insert(onConflict = ABORT)
+    @Insert(onConflict = REPLACE)
     void insertBlockchain(BlockchainCurrencyPrices blockchainCurrencyPricesList);
 
     @Query("SELECT * FROM BlockchainCurrencyPrices")
     LiveData<BlockchainCurrencyPrices> getBlockchainCurrencyPrices();
+
+    @Query("SELECT * FROM BlockchainCurrencyPrices")
+    BlockchainCurrencyPrices getRawBlockchainCurrencyPrices();
+
 }

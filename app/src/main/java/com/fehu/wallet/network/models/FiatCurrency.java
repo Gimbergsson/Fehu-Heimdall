@@ -11,8 +11,11 @@ import androidx.room.Entity;
 @Entity
 public class FiatCurrency {
 
+    /*@PrimaryKey
+    int id = 0;*/
+
     @NonNull
-    //PrimaryKey
+    //@PrimaryKey
     @SerializedName("15m")
     String fifteenMinutes;
 
@@ -34,7 +37,7 @@ public class FiatCurrency {
     @SerializedName("symbol")
     private String currencySymbol;
 
-    public FiatCurrency(@NonNull String fifteenMinutes, @NonNull String lastPrice, @NonNull String buyPrice, @NonNull String sellPrice, String currencySymbol) {
+    public FiatCurrency(String fifteenMinutes, String lastPrice, String buyPrice, String sellPrice, String currencySymbol) {
         this.fifteenMinutes = fifteenMinutes;
         this.lastPrice = lastPrice;
         this.buyPrice = buyPrice;
@@ -42,39 +45,44 @@ public class FiatCurrency {
         this.currencySymbol = currencySymbol;
     }
 
-    @NonNull
+
+    /*public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }*/
+
     public String getFifteenMinutes() {
         return fifteenMinutes;
     }
 
-    public void setFifteenMinutes(@NonNull String fifteenMinutes) {
+    public void setFifteenMinutes(String fifteenMinutes) {
         this.fifteenMinutes = fifteenMinutes;
     }
 
-    @NonNull
     public String getLastPrice() {
         return lastPrice;
     }
 
-    public void setLastPrice(@NonNull String lastPrice) {
+    public void setLastPrice(String lastPrice) {
         this.lastPrice = lastPrice;
     }
 
-    @NonNull
     public String getBuyPrice() {
         return buyPrice;
     }
 
-    public void setBuyPrice(@NonNull String buyPrice) {
+    public void setBuyPrice(String buyPrice) {
         this.buyPrice = buyPrice;
     }
 
-    @NonNull
     public String getSellPrice() {
         return sellPrice;
     }
 
-    public void setSellPrice(@NonNull String sellPrice) {
+    public void setSellPrice(String sellPrice) {
         this.sellPrice = sellPrice;
     }
 

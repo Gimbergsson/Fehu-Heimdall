@@ -1,7 +1,7 @@
 package com.fehu.wallet.network.repositories;
 
-import com.fehu.wallet.da.BlockchainDao;
-import com.fehu.wallet.network.api.BlockchainApi;
+import com.fehu.wallet.db.da.FehuDao;
+import com.fehu.wallet.network.api.ApiManager;
 import com.fehu.wallet.network.models.BlockchainCurrencyPrices;
 
 import androidx.annotation.NonNull;
@@ -18,14 +18,14 @@ public class BlockchainCurrencyPriceRepo extends BaseRepository {
 
     private final String TAG = BlockchainCurrencyPriceRepo.class.getSimpleName();
 
-    private final BlockchainApi blockchainApi;
+    private final ApiManager.BlockchainApi blockchainApi;
 
-    public BlockchainCurrencyPriceRepo(BlockchainDao blockchainDao, BlockchainApi blockchainApi) {
-        this.blockchainDao = blockchainDao;
+    public BlockchainCurrencyPriceRepo(FehuDao fehuDao, ApiManager.BlockchainApi blockchainApi) {
+        this.fehuDao = fehuDao;
         this.blockchainApi = blockchainApi;
 
+        // Run every 30s
         /*final Handler handler = new Handler();
-
         Runnable updateRunnable = new Runnable() {
             @Override
             public void run() {
@@ -33,14 +33,14 @@ public class BlockchainCurrencyPriceRepo extends BaseRepository {
                 handler.postDelayed(this, 30000);
             }
         };
-
         handler.post(updateRunnable);*/
+
         //refresh();
     }
 
     public LiveData<BlockchainCurrencyPrices> loadCurrencyPrices(Callback<BlockchainCurrencyPrices> callback) {
         refresh(callback);
-        return blockchainDao.getBlockchainCurrencyPrices();
+        return fehuDao.getBlockchainCurrencyPrices();
     }
 
     @WorkerThread
@@ -68,16 +68,16 @@ public class BlockchainCurrencyPriceRepo extends BaseRepository {
     private void insertReadings(final BlockchainCurrencyPrices blockchainCurrencyPrices) {
         if (blockchainCurrencyPrices != null) {
             //final BlockchainCurrencyPrices[] array = new BlockchainCurrencyPrices[blockchainCurrencyPricesList.size()];
-            if (blockchainDao != null) {
-                //new Thread(() -> blockchainDao.insertReadings(blockchainCurrencyPricesList.toArray(array))).start();
+            if (fehuDao != null) {
+                //new Thread(() -> fehuDao.insertReadings(blockchainCurrencyPricesList.toArray(array))).start();
 
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         //blockchainCurrencyPrices.setTimestamp(System.currentTimeMillis());
-                        //blockchainDao.deleteOld();
-                        //blockchainDao.delete();
-                        blockchainDao.insertBlockchain(blockchainCurrencyPrices);
+                        //fehuDao.deleteOld();
+                        //fehuDao.delete();
+                        fehuDao.insertBlockchain(blockchainCurrencyPrices);
                     }
                 }).start();
             }
