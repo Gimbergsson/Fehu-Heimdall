@@ -121,19 +121,15 @@ public class MainFragment extends Fragment implements BottomNavigationView.OnNav
         switch (item.getItemId()) {
             case R.id.navigation_home:
                 transaction.replace(R.id.page_container, new HomeFragment().getInstance());
-                transaction.addToBackStack(HomeFragment.TAG);
                 break;
             case R.id.navigation_dashboard:
                 transaction.replace(R.id.page_container, new CheckoutFragment().getInstance());
-                transaction.addToBackStack(CheckoutFragment.TAG);
                 break;
             case R.id.navigation_scanner:
                 transaction.replace(R.id.page_container, new ScannerFragment().getInstance());
-                transaction.addToBackStack(ScannerFragment.TAG);
                 break;
             case R.id.navigation_notifications:
                 transaction.replace(R.id.page_container, new AccountFragment().getInstance());
-                transaction.addToBackStack(AccountFragment.TAG);
                 break;
         }
 

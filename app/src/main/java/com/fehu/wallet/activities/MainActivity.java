@@ -10,7 +10,6 @@ import com.amitshekhar.DebugDB;
 import com.fehu.wallet.R;
 import com.fehu.wallet.fragments.AccountFragment;
 import com.fehu.wallet.fragments.CheckoutFragment;
-import com.fehu.wallet.fragments.HomeFragment;
 import com.fehu.wallet.fragments.MainFragment;
 import com.fehu.wallet.fragments.ScannerFragment;
 import com.fehu.wallet.network.api.ApiManager;
@@ -115,19 +114,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.nav_camera:
                 transaction.replace(R.id.main_container, new MainFragment().getInstance());
-                transaction.addToBackStack(HomeFragment.TAG);
                 break;
             case R.id.nav_gallery:
                 transaction.replace(R.id.main_container, new CheckoutFragment().getInstance());
-                transaction.addToBackStack(CheckoutFragment.TAG);
                 break;
             case R.id.nav_slideshow:
                 transaction.replace(R.id.main_container, new ScannerFragment().getInstance());
-                transaction.addToBackStack(ScannerFragment.TAG);
                 break;
             case R.id.nav_manage:
                 transaction.replace(R.id.main_container, new AccountFragment().getInstance());
-                transaction.addToBackStack(AccountFragment.TAG);
                 break;
             case R.id.nav_share:
                 Toast.makeText(this, "nav_share", Toast.LENGTH_SHORT).show();
